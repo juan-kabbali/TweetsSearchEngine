@@ -13,6 +13,12 @@ public class MainApp extends Application {
 
     public static Stage stage;
     
+    /**
+     * Here, our application starts
+     * 
+     * @param stage
+     * @throws java.lang.Exception
+     **/
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));

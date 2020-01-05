@@ -12,20 +12,16 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -34,10 +30,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.ChangeListener;
-import javax.xml.bind.Marshaller;
 import main.tweet.search.engine.ApacheLuceneHandler;
-import main.tweet.search.engine.MainApp;
 import main.tweet.search.engine.Properties;
 import main.tweet.search.engine.model.Tweet;
 import main.tweet.search.engine.model.TweetsHandler;
@@ -89,9 +82,17 @@ public class HomeController implements Initializable {
     private TweetsHandler tweetsHandler;
     private ApacheLuceneHandler apacheLuceneHandler;
 
+    /**
+     * This method is executed before HomeView is displayed. 
+     * This is a implementation of initialize method from Initializable interface
+     * 
+     * @param url
+     * @param rb
+    **/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        // Allows to create new lines or wrap text when content is longer than a single line
         this.zoomTweetContent.setWrapText(true);
 
         // Set up choice box options
@@ -114,6 +115,7 @@ public class HomeController implements Initializable {
         // Initialize Lucene Hanlder
         this.apacheLuceneHandler = new ApacheLuceneHandler();
 
+        // If an index exists, displays all its documents
         if (this.apacheLuceneHandler.indexExists()) {
             this.apacheLuceneHandler.search("*", "*");
             this.tweetsHandler.setTweetList(FXCollections.observableArrayList(this.apacheLuceneHandler.retrieveFoundedDocs()));
@@ -122,16 +124,28 @@ public class HomeController implements Initializable {
 
     }
 
+    /**
+     * This method handles click event of search button.
+     * Here, we call an implementation of a apache lucene search taking the
+     * textInput string as searching terms.
+     * 
+     * @param event
+     * @throws IOException
+     * @throws URISyntaxException 
+     */
     @FXML
     private void handleSearchBtn(ActionEvent event) throws IOException, URISyntaxException {
-        // apacheLuceneHandler.search(Properties.LUCENE_TWEET_CONTENT, "pour", 10); --> 0 hits cause of Analyzer
-
+        
+        // If there is an existing lucene index
         if (this.apacheLuceneHandler.indexExists()) {
+            // If there are not terms to search, we collect all documents with a wildcard expression.
             if (this.searchTerms.getText().isEmpty()) {
                 this.apacheLuceneHandler.search("*", "*");
             } else {
+                // If there are terms, we perform a query to get relevant documents
                 this.apacheLuceneHandler.search(this.getTargetFields(), this.searchTerms.getText());
             }
+            // Display results
             this.tweetsTable.getItems().clear();
             this.tweetsHandler.setTweetList(FXCollections.observableArrayList(this.apacheLuceneHandler.retrieveFoundedDocs()));
             this.refresTable();
@@ -140,6 +154,14 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * This method handles Import Tweets menu Item click event.
+     * Here, we display a chooser file to select the tweets for importing and 
+     * loading them to the lucene index.
+     * 
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void handleImportTweets(ActionEvent event) throws IOException {
         File selectedFile = this.chooseTweetFile();
@@ -174,6 +196,9 @@ public class HomeController implements Initializable {
                     }
                     line = br.readLine();
                 }
+                
+                /* Diplay just created tweets and set values for graphics in the 
+                   visualization window */
                 this.refresTable();
                 this.apacheLuceneHandler.getIndexWriter().commit();
                 this.apacheLuceneHandler.count(Properties.LUCENE_TWEET_RETWEETED_USER_ID, GraphsController.top10RetweetedUsers, 10);
@@ -185,6 +210,10 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * Here, we capture the event of keyboard arrows and click over a row on the
+     * Tweets table to refresh its content in the preview textArea.
+     */
     @FXML
     private void handleZoomTweetContent() {
         Tweet selectedTweet = this.tweetsTable.getSelectionModel().getSelectedItem();
@@ -193,6 +222,11 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * This method handles Delete index menu Item click event.
+     * Here, we delete the index if exits
+     * 
+     */
     @FXML
     private void handleDeleteIndex() {
         System.out.println("Delete index");
@@ -206,6 +240,7 @@ public class HomeController implements Initializable {
         }
     }
 
+    
     @FXML
     private void handleOpenVisualization(javafx.event.ActionEvent event) {
         try {
@@ -219,9 +254,9 @@ public class HomeController implements Initializable {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
-    private void handleAbout(){
+    private void handleAbout() {
         JOptionPane.showMessageDialog(new JFrame(), "This is a project created in advanced development class at université lyon II by Juan Pablo Aguirre and Juliana Castellanos");
     }
 

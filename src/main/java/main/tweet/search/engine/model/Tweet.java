@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import main.tweet.search.engine.Properties;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
@@ -28,6 +26,12 @@ public class Tweet extends Doc{
     public Tweet() {
     }
 
+    /**
+     * Constructor that creates a new tweet object from a String array containing
+     * the values of each tweet attribute. This String array is passed out when 
+     * importing a file.
+     * @param fields 
+     */
     public Tweet(String[] fields) {
         try {
             this.id = (tweetHasField(fields, Properties.TWEET_ID)) ? fields[Properties.TWEET_ID] : null;
@@ -89,6 +93,7 @@ public class Tweet extends Doc{
     public String toString() {
         return "Tweet{" + "id=" + id + ", userId=" + userId + ", publicationDate=" + publicationDate + ", content=" + content + ", retweetedUserId=" + retweetedUserId + ", score=" + score + '}';
     }
+    
     
     private boolean tweetHasField(String[] fields, int fieldPosition) {
         return fieldPosition >= 0 && fieldPosition < fields.length;

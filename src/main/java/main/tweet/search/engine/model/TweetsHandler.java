@@ -1,12 +1,11 @@
 package main.tweet.search.engine.model;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 
 /**
- *
+ * This class allows to Handle tweets objects by using a List.
+ * Each row on the table placed in HomeView interface is an object contained into tweetList
  * @author Juan Pablo
  */
 public class TweetsHandler {
@@ -15,15 +14,6 @@ public class TweetsHandler {
 
     public TweetsHandler() {
         this.tweetList = FXCollections.observableArrayList();
-        /* this.tweetList.addListener(new ListChangeListener<Tweet>(){
-            @Override
-            public void onChanged(ListChangeListener.Change<? extends Tweet> c) {
-                for(Tweet tweet : c.getList() ){
-                    tweetsTableView.getItems().add(tweet);
-                }
-            }
-        
-        }); */
     }
 
     public ObservableList<Tweet> getTweetList() {

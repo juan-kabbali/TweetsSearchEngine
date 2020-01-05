@@ -21,7 +21,10 @@ public class GraphsController implements Initializable {
     public static HashMap<String, Integer> top10RetweetedUsers;
     public static HashMap<String, Integer> top10ActiveUsers;
     public static HashMap<String, Integer> top10UsedWords;
-    
+
+    /**
+     * Initialize HashMaps in a static context to be set by ApacheLucenHandler
+    **/
     static {
         GraphsController.top10RetweetedUsers = new HashMap<>();
         GraphsController.top10ActiveUsers = new HashMap<>();
@@ -40,7 +43,7 @@ public class GraphsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        // 
+        // Create graph of Top 10 Retweeted users
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("User ID");
 
@@ -57,7 +60,7 @@ public class GraphsController implements Initializable {
 
         this.topRetweetedUsers.getData().add(dataSeries1);    
         
-        //
+        // Create graph of Top 10 active users
         CategoryAxis xAxis2 = new CategoryAxis();
         xAxis2.setLabel("User ID");
 
@@ -74,7 +77,7 @@ public class GraphsController implements Initializable {
 
         this.topActiveUsers.getData().add(dataSeries2);    
         
-        //
+        // Create graph of Top 30 used words
         CategoryAxis xAxis3 = new CategoryAxis();
         xAxis3.setLabel("Words");
 
@@ -90,7 +93,7 @@ public class GraphsController implements Initializable {
         }
 
         this.topUsedWords.getData().add(dataSeries3);
-        
+       
         
     }    
     

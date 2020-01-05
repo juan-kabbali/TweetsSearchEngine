@@ -240,7 +240,11 @@ public class HomeController implements Initializable {
         }
     }
 
-    
+    /***
+     * This method handles Open Visualization menu Item click event.
+     * Here, we create a new stage that will open a new windows with visualization graphs.
+     * @param event 
+     */
     @FXML
     private void handleOpenVisualization(javafx.event.ActionEvent event) {
         try {
@@ -255,11 +259,19 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * This method handles About menu Item click event.
+     * Here, we just display a little text message regarding the app itself.
+     */
     @FXML
     private void handleAbout() {
         JOptionPane.showMessageDialog(new JFrame(), "This is a project created in advanced development class at université lyon II by Juan Pablo Aguirre and Juliana Castellanos");
     }
 
+    /**
+     * This method opens a File Chooser pop up to select tweets file when importing.
+     * @return Chosen file
+     */
     private File chooseTweetFile() {
         // Display a filechooser to select tweets file
         FileChooser fileChooser = new FileChooser();
@@ -271,12 +283,20 @@ public class HomeController implements Initializable {
         return fileChooser.showOpenDialog(null);
     }
 
+    /**
+     * This method handles refreshing tasks for displaying updated tweets content.
+     */
     private void refresTable() {
         this.tweetsTable.setItems(this.tweetsHandler.getTweetList());
         this.foundTweets.setText(Integer.toString(this.tweetsHandler.getTweetList().size()));
         this.zoomTweetContent.setText("");
     }
 
+    /**
+     * This method handles selectable conversion from selected element to lucene doc field name.
+     * It's extremely important to tell lucene what field will be queried
+     * @return Property String with apache lucene tweet field name
+     */
     private String getTargetFields() {
         switch (this.selectedField.getSelectionModel().getSelectedItem().toString()) {
             case "By Content":

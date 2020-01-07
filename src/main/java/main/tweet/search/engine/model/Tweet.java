@@ -16,7 +16,7 @@ import org.apache.lucene.index.IndexWriter;
  * @author Juan Pablo
  * @author Juliana Castellanos
  */
-public class Tweet extends Doc{
+public class Tweet extends Doc {
 
     private String userId;
     private Date publicationDate;

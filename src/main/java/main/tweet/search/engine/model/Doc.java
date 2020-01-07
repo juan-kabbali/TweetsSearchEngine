@@ -4,7 +4,7 @@ package main.tweet.search.engine.model;
  * This is a generic class to represent an Apache Lucene document
  * @author Juan Pablo
  */
-public class Doc {
+public abstract class Doc {
     
     protected String id;
     protected float score;

@@ -125,7 +125,8 @@ public class ApacheLuceneHandler {
     }
 
     /**
-     * 
+     * This method compute the count of most used words in a specific lucene
+     * doc field and set the key and values to a given HashMap.
      * 
      * @param field
      * @param data
